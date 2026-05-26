@@ -32,10 +32,10 @@ public class Main {
                     System.out.print("Enter Email: ");
                     String email = sc.nextLine();
 
-                    System.out.print("Enter Course: ");
-                    String course = sc.nextLine();
+                    System.out.print("Enter department: ");
+                    String department = sc.nextLine();
 
-                    Student s = new Student(name, email, course);
+                    Student s = new Student(name, email, department);
 
                     dao.addStudent(s);
 

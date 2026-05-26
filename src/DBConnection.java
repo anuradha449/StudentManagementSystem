@@ -9,14 +9,20 @@ public class DBConnection {
 
         try {
 
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
             con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/studentdb",
+                    "jdbc:mysql://localhost:3307/student_management",
                     "root",
                     "root123"
             );
 
+            System.out.println("Database Connected");
+
         } catch (Exception e) {
+
             e.printStackTrace();
+
         }
 
         return con;

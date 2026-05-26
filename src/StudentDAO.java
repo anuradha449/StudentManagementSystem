@@ -1,61 +1,68 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class StudentDAO {
 
-    Connection con = DBConnection.getConnection();
+    Connection con;
 
-    // ADD STUDENT
+    // Constructor
+    public StudentDAO() {
 
+        con = DBConnection.getConnection();
+
+    }
+
+    // Add Student
     public void addStudent(Student s) {
 
         try {
 
-            String query = "INSERT INTO students(name,email,course) VALUES(?,?,?)";
+            String query =
+                    "INSERT INTO students(name, department, email) VALUES(?, ?, ?)";
 
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.setString(1, s.getName());
-            ps.setString(2, s.getEmail());
-            ps.setString(3, s.getCourse());
+            ps.setString(2, s.getDepartment());
+            ps.setString(3, s.getEmail());
 
             ps.executeUpdate();
 
             System.out.println("Student Added Successfully");
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // VIEW STUDENTS
-
+    // View Students
     public void viewStudents() {
 
         try {
 
             String query = "SELECT * FROM students";
 
-            Statement st = con.createStatement();
+            PreparedStatement ps = con.prepareStatement(query);
 
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
 
                 System.out.println(
-                        rs.getInt("id") + " | "
-                                + rs.getString("name") + " | "
-                                + rs.getString("email") + " | "
-                                + rs.getString("course")
+                        rs.getInt("id") + " | " +
+                                rs.getString("name") + " | " +
+                                rs.getString("department") + " | " +
+                                rs.getString("email")
                 );
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // DELETE STUDENT
-
+    // Delete Student
     public void deleteStudent(int id) {
 
         try {
@@ -70,7 +77,31 @@ public class StudentDAO {
 
             System.out.println("Student Deleted Successfully");
 
-        } catch(Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Update Student
+    public void updateStudent(Student s) {
+
+        try {
+
+            String query =
+                    "UPDATE students SET name=?, department=?, email=? WHERE id=?";
+
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setString(1, s.getName());
+            ps.setString(2, s.getDepartment());
+            ps.setString(3, s.getEmail());
+            ps.setInt(4, s.getId());
+
+            ps.executeUpdate();
+
+            System.out.println("Student Updated Successfully");
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
